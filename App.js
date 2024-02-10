@@ -7,6 +7,8 @@ import { useState } from "react";
 import IconButton from "./components/IconButton";
 import CircleButton from "./components/CircleButton";
 import EmojiPicker from "./components/EmojiPicker";
+import EmojiList from "./components/EmojiList";
+import EmojiSticker from "./components/EmojiSticker";
 
 const placeholderImage = require("./assets/images/background-image.png");
 
@@ -14,6 +16,7 @@ export default function App() {
   const [selectedImage, setSelectedImage] = useState(null);
   const [showAppOptions, setShowAppOptions] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [pickedEmoji, setPickedEmoji] = useState(null);
 
   const onReset = () => {
     setShowAppOptions(false);
@@ -51,6 +54,9 @@ export default function App() {
           placeholderImageSource={placeholderImage}
           selectedImage={selectedImage}
         />
+        {pickedEmoji && (
+          <EmojiSticker imageSize={40} stickerSource={pickedEmoji} />
+        )}
       </View>
       {showAppOptions ? ( //Conditionally rendering buttons based on the showAppOptions state and if the image has been uploaded
         <View style={styles.optionsContainer}>
@@ -77,11 +83,8 @@ export default function App() {
           />
         </View>
       )}
-      <EmojiPicker
-        isVisible={isModalVisible}
-        onClose={OnModalClose}
-      >
-        
+      <EmojiPicker isVisible={isModalVisible} onClose={OnModalClose}>
+        <EmojiList onSelect={setPickedEmoji} onCloseModal={OnModalClose} />
       </EmojiPicker>
       <StatusBar style="auto" />
     </View>
